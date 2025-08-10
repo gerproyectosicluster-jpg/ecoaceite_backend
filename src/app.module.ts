@@ -11,6 +11,7 @@ import { EducationalModulesModule } from './modules/educational-modules/educatio
 import { UserProgressModule } from './modules/user-progress/user-progress.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     UserProgressModule,
     CertificatesModule,
     NotificationsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

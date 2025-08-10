@@ -14,11 +14,11 @@ import { UserProgressStatus } from '../enum/user-progress-status.enum';
 export class CreateUserProgressDto {
   @IsUUID()
   @IsNotEmpty()
-  userId: string;
+  user_id: string;
 
   @IsUUID()
   @IsNotEmpty()
-  moduleId: string;
+  module_id: string;
 
   @IsEnum(UserProgressStatus)
   @IsOptional()
@@ -32,13 +32,13 @@ export class CreateUserProgressDto {
 
   @IsDateString()
   @IsOptional()
-  lastAccessed?: string;
+  last_accessed?: string;
 
   @IsDateString()
   @IsOptional()
-  completionDate?: string;
+  completion_date?: string;
 
   @IsString()
   @IsOptional()
-  certificateUrl?: string;
+  certificate_url?: string;
 }

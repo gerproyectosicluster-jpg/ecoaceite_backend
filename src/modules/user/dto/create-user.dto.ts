@@ -19,11 +19,11 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty({ message: 'password is required' })
-  password: string;
+  password_hash: string;
 
   @IsString()
   @IsOptional()
-  restaurantName?: string;
+  restaurant_name?: string;
 
   @IsString()
   @IsNotEmpty({ message: 'role is required' })

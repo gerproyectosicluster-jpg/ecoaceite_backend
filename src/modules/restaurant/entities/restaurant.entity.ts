@@ -20,37 +20,37 @@ export class Restaurant {
   id: string;
 
   @OneToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column({ name: 'capacity', type: 'int' })
   capacity: number;
 
   @Column({
-    name: 'oilUsageEstimate',
+    name: 'oil_usage_estimate',
     type: 'decimal',
     precision: 10,
     scale: 2,
   })
-  oilUsageEstimate: number;
+  oil_usage_estimate: number;
 
-  @Column({ name: 'wasteSchedule', type: 'jsonb' })
-  wasteSchedule: any;
+  @Column({ name: 'waste_schedule', type: 'jsonb' })
+  waste_schedule: any;
 
   @Column({ name: 'category', type: 'varchar', length: 20 })
   category: 'restaurant' | 'cafeteria' | 'food_truck' | 'catering';
 
   @Column({
-    name: 'certificationStatus',
+    name: 'certification_status',
     type: 'varchar',
     length: 20,
     default: 'pending',
   })
-  certificationStatus: 'pending' | 'bronze' | 'silver' | 'gold';
+  certification_status: 'pending' | 'bronze' | 'silver' | 'gold';
 
-  @CreateDateColumn({ name: 'createdAt', type: 'timestamptz' })
-  createdAt: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  created_at: Date;
 
-  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamptz' })
-  updatedAt: Date;
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
+  updated_at: Date;
 }

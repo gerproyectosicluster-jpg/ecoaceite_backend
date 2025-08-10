@@ -9,10 +9,10 @@ import {
 
 @Entity('users')
 @Check(
-  `(role = 'admin' AND restaurantName IS NULL) OR (role = 'restaurant_owner' AND restaurantName IS NOT NULL)`,
+  `(role = 'admin' AND restaurant_name IS NULL) OR (role = 'restaurant_owner' AND restaurant_name IS NOT NULL)`,
 )
 export class User {
-  @PrimaryGeneratedColumn('uuid', { name: 'id' })
+  @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
   id: string;
 
   @Column({ name: 'name', type: 'varchar', length: 100 })
@@ -26,16 +26,16 @@ export class User {
   })
   email: string;
 
-  @Column({ name: 'passwordHash', type: 'varchar', length: 255 })
-  passwordHash: string;
+  @Column({ name: 'password_hash', type: 'varchar', length: 255 })
+  password_hash: string;
 
   @Column({
-    name: 'restaurantName',
+    name: 'restaurant_name',
     type: 'varchar',
     length: 100,
     nullable: true,
   })
-  restaurantName?: string;
+  restaurant_name?: string;
 
   @Column({
     name: 'role',
@@ -56,9 +56,9 @@ export class User {
   @Column({ name: 'verified', type: 'boolean', default: false })
   verified: boolean;
 
-  @CreateDateColumn({ name: 'createdAt', type: 'timestamptz' })
-  createdAt: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  created_at: Date;
 
-  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamptz' })
-  updatedAt: Date;
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
+  updated_at: Date;
 }

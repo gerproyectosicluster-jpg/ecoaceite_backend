@@ -17,19 +17,19 @@ export class Certificate {
   id: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @ManyToOne(() => EducationalModule, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'moduleId' })
+  @JoinColumn({ name: 'module_id' })
   module: EducationalModule;
 
   @ManyToOne(() => UserProgress, { onDelete: 'CASCADE' })
   @JoinColumn([
-    { name: 'userId', referencedColumnName: 'user' },
-    { name: 'moduleId', referencedColumnName: 'module' },
+    { name: 'user_id', referencedColumnName: 'user' },
+    { name: 'module_id', referencedColumnName: 'module' },
   ])
-  userProgress: UserProgress;
+  user_progress: UserProgress;
 
   @Column({
     name: 'certificate_code',
@@ -37,17 +37,17 @@ export class Certificate {
     length: 20,
     unique: true,
   })
-  certificateCode: string;
+  certificate_code: string;
 
-  @Column({ name: 'issueDate', type: 'date', default: () => 'CURRENT_DATE' })
-  issueDate: string;
+  @Column({ name: 'issue_date', type: 'date', default: () => 'CURRENT_DATE' })
+  issue_date: string;
 
-  @Column({ name: 'expiryDate', type: 'date', nullable: true })
-  expiryDate?: string;
+  @Column({ name: 'expiry_date', type: 'date', nullable: true })
+  expiry_date?: string;
 
-  @Column({ name: 'downloadUrl', type: 'text' })
-  downloadUrl: string;
+  @Column({ name: 'download_url', type: 'text' })
+  download_url: string;
 
-  @Column({ name: 'verificationUrl', type: 'text' })
-  verificationUrl: string;
+  @Column({ name: 'verification_url', type: 'text' })
+  verification_url: string;
 }

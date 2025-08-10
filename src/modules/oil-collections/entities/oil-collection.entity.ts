@@ -21,27 +21,27 @@ export class OilCollection {
   id: string;
 
   @ManyToOne(() => Restaurant, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'restaurantId' })
+  @JoinColumn({ name: 'restaurant_id' })
   restaurant: Restaurant;
 
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'collectorId' })
+  @JoinColumn({ name: 'collector_id' })
   collector?: User;
 
   @Column({
-    name: 'litersCollected',
+    name: 'liters_collected',
     type: 'decimal',
     precision: 10,
     scale: 2,
   })
-  litersCollected: number;
+  liters_collected: number;
 
   @Column({
-    name: 'collectionDate',
+    name: 'collection_date',
     type: 'date',
     default: () => 'CURRENT_DATE',
   })
-  collectionDate: string;
+  collection_date: string;
 
   @Column({
     name: 'status',
@@ -52,22 +52,22 @@ export class OilCollection {
   status: OilCollectionStatus;
 
   @Column({
-    name: 'processorCompany',
+    name: 'processor_company',
     type: 'varchar',
     length: 100,
     nullable: true,
   })
-  processorCompany?: string;
+  processor_company?: string;
 
-  @Column({ name: 'recycleCertificateUrl', type: 'text', nullable: true })
-  recycleCertificateUrl?: string;
+  @Column({ name: 'recycle_certificate_url', type: 'text', nullable: true })
+  recycle_certificate_url?: string;
 
   @Column({ name: 'notes', type: 'text', nullable: true })
   notes?: string;
 
-  @CreateDateColumn({ name: 'createdAt', type: 'timestamptz' })
-  createdAt: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  created_at: Date;
 
-  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamptz' })
-  updatedAt: Date;
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
+  updated_at: Date;
 }

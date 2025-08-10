@@ -20,7 +20,7 @@ export class CreateEducationalModuleDto {
 
   @IsString()
   @IsOptional()
-  contentUrl?: string;
+  content_url?: string;
 
   @IsInt()
   @Min(0)
@@ -29,5 +29,5 @@ export class CreateEducationalModuleDto {
 
   @IsBoolean()
   @IsOptional()
-  isActive?: boolean;
+  is_active?: boolean;
 }

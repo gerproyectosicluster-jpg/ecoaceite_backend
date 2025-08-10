@@ -25,7 +25,7 @@ export class UserProgress {
   user: User;
 
   @ManyToOne(() => EducationalModule, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'moduleId' })
+  @JoinColumn({ name: 'module_id' })
   module: EducationalModule;
 
   @Column({
@@ -46,15 +46,15 @@ export class UserProgress {
   score?: number;
 
   @CreateDateColumn({
-    name: 'lastAccessed',
+    name: 'last_accessed',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  lastAccessed: Date;
+  last_accessed: Date;
 
-  @Column({ name: 'completionDate', type: 'timestamptz', nullable: true })
-  completionDate?: Date;
+  @Column({ name: 'completion_date', type: 'timestamptz', nullable: true })
+  completion_date?: Date;
 
-  @Column({ name: 'certificateUrl', type: 'text', nullable: true })
-  certificateUrl?: string;
+  @Column({ name: 'certificate_url', type: 'text', nullable: true })
+  certificate_url?: string;
 }

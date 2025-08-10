@@ -14,19 +14,19 @@ import { OilCollectionStatus } from '../enum/oil-collection-status.enum';
 export class CreateOilCollectionDto {
   @IsUUID()
   @IsNotEmpty()
-  restaurantId: string;
+  restaurant_id: string;
 
   @IsUUID()
   @IsOptional()
-  collectorId?: string;
+  collector_id?: string;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsPositive()
-  litersCollected: number;
+  liters_collected: number;
 
   @IsDateString()
   @IsOptional()
-  collectionDate?: string;
+  collection_date?: string;
 
   @IsEnum(OilCollectionStatus)
   @IsOptional()
@@ -35,11 +35,11 @@ export class CreateOilCollectionDto {
   @IsString()
   @MaxLength(100)
   @IsOptional()
-  processorCompany?: string;
+  processor_company?: string;
 
   @IsString()
   @IsOptional()
-  recycleCertificateUrl?: string;
+  recycle_certificate_url?: string;
 
   @IsString()
   @IsOptional()

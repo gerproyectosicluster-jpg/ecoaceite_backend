@@ -10,30 +10,30 @@ import {
 export class CreateCertificateDto {
   @IsUUID()
   @IsNotEmpty()
-  userId: string;
+  user_id: string;
 
   @IsUUID()
   @IsNotEmpty()
-  moduleId: string;
+  module_id: string;
 
   @IsString()
   @IsNotEmpty()
   @MaxLength(20)
-  certificateCode: string;
+  certificate_code: string;
 
   @IsDateString()
   @IsOptional()
-  issueDate?: string;
+  issue_date?: string;
 
   @IsDateString()
   @IsOptional()
-  expiryDate?: string;
+  expiry_date?: string;
 
   @IsString()
   @IsNotEmpty()
-  downloadUrl: string;
+  download_url: string;
 
   @IsString()
   @IsNotEmpty()
-  verificationUrl: string;
+  verification_url: string;
 }

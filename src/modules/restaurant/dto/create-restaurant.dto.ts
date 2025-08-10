@@ -13,7 +13,7 @@ import { RestaurantCategory } from '../enums/restaurant_category.enum';
 export class CreateRestaurantDto {
   @IsUUID()
   @IsNotEmpty()
-  userId: string;
+  user_id: string;
 
   @IsNumber()
   @IsPositive()
@@ -21,16 +21,16 @@ export class CreateRestaurantDto {
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsPositive()
-  oilUsageEstimate: number;
+  oil_usage_estimate: number;
 
   @IsObject()
   @IsNotEmpty()
-  wasteSchedule: any;
+  waste_schedule: any;
 
   @IsEnum(RestaurantCategory)
   category: RestaurantCategory;
 
   @IsEnum(CertificationStatus)
   @IsOptional()
-  certificationStatus?: CertificationStatus;
+  certification_status?: CertificationStatus;
 }

@@ -17,18 +17,18 @@ export class EducationalModule {
   @Column({ name: 'description', type: 'text', nullable: true })
   description?: string;
 
-  @Column({ name: 'contentUrl', type: 'text', nullable: true })
-  contentUrl?: string;
+  @Column({ name: 'content_url', type: 'text', nullable: true })
+  content_url?: string;
 
   @Column({ name: 'order', type: 'int', default: 0 })
   order: number;
 
-  @Column({ name: 'isActive', type: 'boolean', default: true })
-  isActive: boolean;
+  @Column({ name: 'is_active', type: 'boolean', default: true })
+  is_active: boolean;
 
-  @CreateDateColumn({ name: 'createdAt', type: 'timestamptz' })
-  createdAt: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  created_at: Date;
 
-  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamptz' })
-  updatedAt: Date;
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
+  updated_at: Date;
 }

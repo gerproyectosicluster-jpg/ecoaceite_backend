@@ -12,7 +12,7 @@ import { NotificationType } from '../enum/notification-type.enum';
 export class CreateNotificationDto {
   @IsUUID()
   @IsNotEmpty()
-  userId: string;
+  user_id: string;
 
   @IsEnum(NotificationType)
   @IsNotEmpty()
@@ -29,9 +29,9 @@ export class CreateNotificationDto {
 
   @IsBoolean()
   @IsOptional()
-  isRead?: boolean;
+  is_read?: boolean;
 
   @IsString()
   @IsOptional()
-  actionUrl?: string;
+  action_url?: string;
 }

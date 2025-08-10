@@ -18,7 +18,7 @@ export class Notification {
   id: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   @Index('idxUserId')
   user: User;
 
@@ -35,12 +35,12 @@ export class Notification {
   @Column({ name: 'message', type: 'text' })
   message: string;
 
-  @Column({ name: 'isRead', type: 'boolean', default: false })
-  isRead: boolean;
+  @Column({ name: 'is_read', type: 'boolean', default: false })
+  is_read: boolean;
 
-  @Column({ name: 'actionUrl', type: 'text', nullable: true })
-  actionUrl?: string;
+  @Column({ name: 'action_url', type: 'text', nullable: true })
+  action_url?: string;
 
-  @CreateDateColumn({ name: 'createdAt', type: 'timestamptz' })
-  createdAt: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  created_at: Date;
 }
