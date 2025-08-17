@@ -13,9 +13,9 @@ import { User } from '../../user/entities/user.entity';
 import { OilCollectionStatus } from '../enum/oil-collection-status.enum';
 
 @Entity('oil_collections')
-@Check('litersCollected > 0')
+@Check('liters_collected > 0')
 @Check(`status IN ('scheduled', 'completed', 'cancelled')`)
-@Check('collectionDate >= createdAt::date')
+@Check('collection_date >= created_at::date')
 export class OilCollection {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;

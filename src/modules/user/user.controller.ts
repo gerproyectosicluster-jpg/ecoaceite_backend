@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  ForbiddenException,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -34,12 +36,24 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Request() req,
+  ) {
+    const user = req.user;
+    if (user.role !== 'admin' && user.sub !== id) {
+      throw new ForbiddenException('You can only edit your own information');
+    }
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string, @Request() req) {
+    const user = req.user;
+    if (user.role !== 'admin' && user.sub !== id) {
+      throw new ForbiddenException('You can only delete your own account');
+    }
     return this.userService.remove(id);
   }
 }

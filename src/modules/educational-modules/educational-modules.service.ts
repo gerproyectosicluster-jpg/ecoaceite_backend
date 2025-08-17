@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { EducationalModule } from './entities/educational-module.entity';
 import { CreateEducationalModuleDto } from './dto/create-educational-module.dto';
 import { UpdateEducationalModuleDto } from './dto/update-educational-module.dto';
 
 @Injectable()
 export class EducationalModulesService {
-  create(createEducationalModuleDto: CreateEducationalModuleDto) {
-    return 'This action adds a new educationalModule';
+  constructor(
+    @InjectRepository(EducationalModule)
+    private readonly educationalModuleRepository: Repository<EducationalModule>,
+  ) {}
+
+  async create(
+    createEducationalModuleDto: CreateEducationalModuleDto,
+  ): Promise<EducationalModule> {
+    const module = this.educationalModuleRepository.create(
+      createEducationalModuleDto,
+    );
+    return await this.educationalModuleRepository.save(module);
   }
 
-  findAll() {
-    return `This action returns all educationalModules`;
+  async findAll(): Promise<EducationalModule[]> {
+    return await this.educationalModuleRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} educationalModule`;
+  async findOne(id: string): Promise<EducationalModule> {
+    const module = await this.educationalModuleRepository.findOne({
+      where: { id },
+    });
+    if (!module)
+      throw new NotFoundException(`EducationalModule #${id} not found`);
+    return module;
   }
 
-  update(id: number, updateEducationalModuleDto: UpdateEducationalModuleDto) {
-    return `This action updates a #${id} educationalModule`;
+  async update(
+    id: string,
+    updateEducationalModuleDto: UpdateEducationalModuleDto,
+  ): Promise<EducationalModule> {
+    const module = await this.findOne(id);
+    Object.assign(module, updateEducationalModuleDto);
+    return await this.educationalModuleRepository.save(module);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} educationalModule`;
+  async remove(id: string): Promise<void> {
+    const module = await this.findOne(id);
+    await this.educationalModuleRepository.remove(module);
   }
 }

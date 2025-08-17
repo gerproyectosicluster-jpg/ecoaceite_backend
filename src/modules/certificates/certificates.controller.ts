@@ -27,7 +27,7 @@ export class CertificatesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.certificatesService.findOne(+id);
+    return this.certificatesService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class CertificatesController {
     @Param('id') id: string,
     @Body() updateCertificateDto: UpdateCertificateDto,
   ) {
-    return this.certificatesService.update(+id, updateCertificateDto);
+    return this.certificatesService.update(id, updateCertificateDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.certificatesService.remove(+id);
+    return this.certificatesService.remove(id);
   }
 }

@@ -11,7 +11,7 @@ import { EducationalModule } from '../../educational-modules/entities/educationa
 import { UserProgress } from '../../user-progress/entities/user-progress.entity';
 
 @Entity('certificates')
-@Unique(['certificateCode'])
+@Unique(['certificate_code'])
 export class Certificate {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;

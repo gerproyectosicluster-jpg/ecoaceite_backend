@@ -21,7 +21,7 @@ export class UserProgress {
   id: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @ManyToOne(() => EducationalModule, { onDelete: 'CASCADE' })

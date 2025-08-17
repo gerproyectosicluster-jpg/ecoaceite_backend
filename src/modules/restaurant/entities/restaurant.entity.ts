@@ -12,9 +12,9 @@ import { User } from '../../user/entities/user.entity';
 
 @Entity('restaurants')
 @Check('capacity > 0')
-@Check('oilUsageEstimate > 0')
+@Check('oil_usage_estimate > 0')
 @Check(`category IN ('restaurant', 'cafeteria', 'food_truck', 'catering')`)
-@Check(`certificationStatus IN ('pending', 'bronze', 'silver', 'gold')`)
+@Check(`certification_status IN ('pending', 'bronze', 'silver', 'gold')`)
 export class Restaurant {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;

@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Certificate } from './entities/certificate.entity';
 import { CreateCertificateDto } from './dto/create-certificate.dto';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
 
 @Injectable()
 export class CertificatesService {
-  create(createCertificateDto: CreateCertificateDto) {
-    return 'This action adds a new certificate';
+  constructor(
+    @InjectRepository(Certificate)
+    private readonly certificateRepository: Repository<Certificate>,
+  ) {}
+
+  async create(
+    createCertificateDto: CreateCertificateDto,
+  ): Promise<Certificate> {
+    const certificate = this.certificateRepository.create({
+      ...createCertificateDto,
+      user: { id: createCertificateDto.user_id } as any,
+      module: { id: createCertificateDto.module_id } as any,
+    });
+    return await this.certificateRepository.save(certificate);
   }
 
-  findAll() {
-    return `This action returns all certificates`;
+  async findAll(): Promise<Certificate[]> {
+    return await this.certificateRepository.find({
+      relations: ['user', 'module', 'user_progress'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} certificate`;
+  async findOne(id: string): Promise<Certificate> {
+    const certificate = await this.certificateRepository.findOne({
+      where: { id },
+      relations: ['user', 'module', 'user_progress'],
+    });
+    if (!certificate)
+      throw new NotFoundException(`Certificate #${id} not found`);
+    return certificate;
   }
 
-  update(id: number, updateCertificateDto: UpdateCertificateDto) {
-    return `This action updates a #${id} certificate`;
+  async update(
+    id: string,
+    updateCertificateDto: UpdateCertificateDto,
+  ): Promise<Certificate> {
+    const certificate = await this.findOne(id);
+    Object.assign(certificate, updateCertificateDto);
+    return await this.certificateRepository.save(certificate);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} certificate`;
+  async remove(id: string): Promise<void> {
+    const certificate = await this.findOne(id);
+    await this.certificateRepository.remove(certificate);
   }
 }

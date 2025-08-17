@@ -1,26 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Restaurant } from './entities/restaurant.entity';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
 @Injectable()
 export class RestaurantService {
-  create(createRestaurantDto: CreateRestaurantDto) {
-    return 'This action adds a new restaurant';
+  constructor(
+    @InjectRepository(Restaurant)
+    private readonly restaurantRepository: Repository<Restaurant>,
+  ) {}
+
+  async create(createRestaurantDto: CreateRestaurantDto): Promise<Restaurant> {
+    const restaurant = this.restaurantRepository.create(createRestaurantDto);
+    return await this.restaurantRepository.save(restaurant);
   }
 
-  findAll() {
-    return `This action returns all restaurant`;
+  async findAll(): Promise<Restaurant[]> {
+    return await this.restaurantRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} restaurant`;
+  async findOne(id: string): Promise<Restaurant> {
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { id },
+    });
+    if (!restaurant) throw new NotFoundException(`Restaurant #${id} not found`);
+    return restaurant;
   }
 
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
-    return `This action updates a #${id} restaurant`;
+  async update(
+    id: string,
+    updateRestaurantDto: UpdateRestaurantDto,
+  ): Promise<Restaurant> {
+    const restaurant = await this.findOne(id);
+    Object.assign(restaurant, updateRestaurantDto);
+    return await this.restaurantRepository.save(restaurant);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} restaurant`;
+  async remove(id: string): Promise<void> {
+    const restaurant = await this.findOne(id);
+    await this.restaurantRepository.remove(restaurant);
   }
 }

@@ -27,7 +27,7 @@ export class UserProgressController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userProgressService.findOne(+id);
+    return this.userProgressService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class UserProgressController {
     @Param('id') id: string,
     @Body() updateUserProgressDto: UpdateUserProgressDto,
   ) {
-    return this.userProgressService.update(+id, updateUserProgressDto);
+    return this.userProgressService.update(id, updateUserProgressDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userProgressService.remove(+id);
+    return this.userProgressService.remove(id);
   }
 }

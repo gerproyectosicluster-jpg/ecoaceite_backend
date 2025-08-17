@@ -27,7 +27,7 @@ export class OilCollectionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.oilCollectionsService.findOne(+id);
+    return this.oilCollectionsService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class OilCollectionsController {
     @Param('id') id: string,
     @Body() updateOilCollectionDto: UpdateOilCollectionDto,
   ) {
-    return this.oilCollectionsService.update(+id, updateOilCollectionDto);
+    return this.oilCollectionsService.update(id, updateOilCollectionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.oilCollectionsService.remove(+id);
+    return this.oilCollectionsService.remove(id);
   }
 }
