@@ -12,6 +12,9 @@ import { UserProgressModule } from './modules/user-progress/user-progress.module
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { QuestionModule } from './modules/question/question.module';
+import { UserAnswerModule } from './modules/user-answer/user-answer.module';
+import { QuizResultModule } from './modules/quiz-result/quiz-result.module';
 
 @Module({
   imports: [
@@ -35,6 +38,9 @@ import { AuthModule } from './modules/auth/auth.module';
     CertificatesModule,
     NotificationsModule,
     AuthModule,
+    QuestionModule,
+    UserAnswerModule,
+    QuizResultModule,
   ],
   controllers: [],
   providers: [],
