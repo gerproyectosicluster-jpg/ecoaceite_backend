@@ -15,6 +15,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { QuestionModule } from './modules/question/question.module';
 import { UserAnswerModule } from './modules/user-answer/user-answer.module';
 import { QuizResultModule } from './modules/quiz-result/quiz-result.module';
+import { EducationalGuideModule } from './modules/educational-guide/educational-guide.module';
+import { UserGuideUploadModule } from './modules/user-guide-upload/user-guide-upload.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { QuizResultModule } from './modules/quiz-result/quiz-result.module';
     QuestionModule,
     UserAnswerModule,
     QuizResultModule,
+    EducationalGuideModule,
+    UserGuideUploadModule,
   ],
   controllers: [],
   providers: [],

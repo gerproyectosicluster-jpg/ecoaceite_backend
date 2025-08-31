@@ -27,7 +27,7 @@ export class UserAnswerController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userAnswerService.findOne(+id);
+    return this.userAnswerService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class UserAnswerController {
     @Param('id') id: string,
     @Body() updateUserAnswerDto: UpdateUserAnswerDto,
   ) {
-    return this.userAnswerService.update(+id, updateUserAnswerDto);
+    return this.userAnswerService.update(id, updateUserAnswerDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userAnswerService.remove(+id);
+    return this.userAnswerService.remove(id);
   }
 }

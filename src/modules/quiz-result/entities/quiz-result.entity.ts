@@ -5,8 +5,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { EducationalModule } from './educational-module.entity';
 import { User } from '../../user/entities/user.entity';
+import { EducationalModule } from 'src/modules/educational-modules/entities/educational-module.entity';
 
 @Entity('quiz_results')
 export class QuizResult {

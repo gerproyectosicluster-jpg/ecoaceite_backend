@@ -27,7 +27,12 @@ export class QuizResultController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.quizResultService.findOne(+id);
+    return this.quizResultService.findOne(id);
+  }
+
+  @Get('user/:userId')
+  findByUser(@Param('userId') userId: string) {
+    return this.quizResultService.findByUser(userId);
   }
 
   @Patch(':id')
@@ -35,11 +40,11 @@ export class QuizResultController {
     @Param('id') id: string,
     @Body() updateQuizResultDto: UpdateQuizResultDto,
   ) {
-    return this.quizResultService.update(+id, updateQuizResultDto);
+    return this.quizResultService.update(id, updateQuizResultDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.quizResultService.remove(+id);
+    return this.quizResultService.remove(id);
   }
 }

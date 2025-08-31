@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserAnswer } from './entities/user-answer.entity';
 import { CreateUserAnswerDto } from './dto/create-user-answer.dto';
 import { UpdateUserAnswerDto } from './dto/update-user-answer.dto';
 
 @Injectable()
 export class UserAnswerService {
-  create(createUserAnswerDto: CreateUserAnswerDto) {
-    return 'This action adds a new userAnswer';
+  constructor(
+    @InjectRepository(UserAnswer)
+    private readonly userAnswerRepository: Repository<UserAnswer>,
+  ) {}
+
+  async create(createUserAnswerDto: CreateUserAnswerDto): Promise<UserAnswer> {
+    const userAnswer = this.userAnswerRepository.create(createUserAnswerDto);
+    return await this.userAnswerRepository.save(userAnswer);
   }
 
-  findAll() {
-    return `This action returns all userAnswer`;
+  async findAll(): Promise<UserAnswer[]> {
+    return await this.userAnswerRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} userAnswer`;
+  async findOne(id: string): Promise<UserAnswer> {
+    const answer = await this.userAnswerRepository.findOne({ where: { id } });
+    if (!answer) throw new NotFoundException(`UserAnswer #${id} not found`);
+    return answer;
   }
 
-  update(id: number, updateUserAnswerDto: UpdateUserAnswerDto) {
-    return `This action updates a #${id} userAnswer`;
+  async update(
+    id: string,
+    updateUserAnswerDto: UpdateUserAnswerDto,
+  ): Promise<UserAnswer> {
+    const answer = await this.findOne(id);
+    Object.assign(answer, updateUserAnswerDto);
+    return await this.userAnswerRepository.save(answer);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userAnswer`;
+  async remove(id: string): Promise<void> {
+    const answer = await this.findOne(id);
+    await this.userAnswerRepository.remove(answer);
   }
 }

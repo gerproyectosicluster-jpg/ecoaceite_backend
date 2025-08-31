@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { QuizResult } from './entities/quiz-result.entity';
 import { CreateQuizResultDto } from './dto/create-quiz-result.dto';
 import { UpdateQuizResultDto } from './dto/update-quiz-result.dto';
 
 @Injectable()
 export class QuizResultService {
-  create(createQuizResultDto: CreateQuizResultDto) {
-    return 'This action adds a new quizResult';
+  constructor(
+    @InjectRepository(QuizResult)
+    private readonly quizResultRepository: Repository<QuizResult>,
+  ) {}
+
+  async create(createQuizResultDto: CreateQuizResultDto): Promise<QuizResult> {
+    const quizResult = this.quizResultRepository.create(createQuizResultDto);
+    return await this.quizResultRepository.save(quizResult);
   }
 
-  findAll() {
-    return `This action returns all quizResult`;
+  async findAll(): Promise<QuizResult[]> {
+    return await this.quizResultRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} quizResult`;
+  async findOne(id: string): Promise<QuizResult> {
+    const result = await this.quizResultRepository.findOne({ where: { id } });
+    if (!result) throw new NotFoundException(`QuizResult #${id} not found`);
+    return result;
   }
 
-  update(id: number, updateQuizResultDto: UpdateQuizResultDto) {
-    return `This action updates a #${id} quizResult`;
+  async findByUser(userId: string): Promise<QuizResult[]> {
+    return await this.quizResultRepository.find({
+      where: { user: { id: userId } },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} quizResult`;
+  async update(
+    id: string,
+    updateQuizResultDto: UpdateQuizResultDto,
+  ): Promise<QuizResult> {
+    const result = await this.findOne(id);
+    Object.assign(result, updateQuizResultDto);
+    return await this.quizResultRepository.save(result);
+  }
+
+  async remove(id: string): Promise<void> {
+    const result = await this.findOne(id);
+    await this.quizResultRepository.remove(result);
   }
 }
