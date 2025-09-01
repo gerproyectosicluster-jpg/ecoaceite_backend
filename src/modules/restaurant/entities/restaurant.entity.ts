@@ -13,7 +13,9 @@ import { User } from '../../user/entities/user.entity';
 @Entity('restaurants')
 @Check('capacity > 0')
 @Check('oil_usage_estimate > 0')
-@Check(`category IN ('restaurant', 'cafeteria', 'food_truck', 'catering')`)
+@Check(
+  `category IN ('restaurant', 'cafeteria', 'food_truck', 'catering', 'fast_food', 'hotel_restaurant', 'bar_grill', 'other')`,
+)
 @Check(`certification_status IN ('pending', 'bronze', 'silver', 'gold')`)
 export class Restaurant {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
@@ -25,6 +27,9 @@ export class Restaurant {
 
   @Column({ name: 'capacity', type: 'int' })
   capacity: number;
+
+  @Column({ name: 'founding_year', type: 'int' })
+  founding_year: number;
 
   @Column({
     name: 'oil_usage_estimate',
@@ -38,7 +43,15 @@ export class Restaurant {
   waste_schedule: any;
 
   @Column({ name: 'category', type: 'varchar', length: 20 })
-  category: 'restaurant' | 'cafeteria' | 'food_truck' | 'catering';
+  category:
+    | 'restaurant'
+    | 'cafeteria'
+    | 'food_truck'
+    | 'catering'
+    | 'fast_food'
+    | 'hotel_restaurant'
+    | 'bar_grill'
+    | 'other';
 
   @Column({
     name: 'certification_status',

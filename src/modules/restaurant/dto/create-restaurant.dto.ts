@@ -12,12 +12,16 @@ import { RestaurantCategory } from '../enums/restaurant_category.enum';
 
 export class CreateRestaurantDto {
   @IsUUID()
-  @IsNotEmpty()
-  user_id: string;
+  @IsOptional()
+  user_id?: string;
 
   @IsNumber()
   @IsPositive()
   capacity: number;
+
+  @IsNumber()
+  @IsPositive()
+  founding_year: number;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsPositive()

@@ -1,6 +1,19 @@
-import { IsString, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+  IsBoolean,
+  IsUUID,
+  IsEnum,
+} from 'class-validator';
+import { GuideStatus } from '../enum/guide_status.enum';
 
 export class CreateEducationalGuideDto {
+  @IsUUID()
+  @IsNotEmpty()
+  unit_id: string;
+
   @IsString()
   @IsNotEmpty()
   @MaxLength(150)
@@ -8,9 +21,28 @@ export class CreateEducationalGuideDto {
 
   @IsString()
   @IsOptional()
-  description?: string;
+  @MaxLength(50)
+  type?: string;
 
   @IsString()
-  @IsNotEmpty()
-  file_url: string;
+  @IsOptional()
+  @MaxLength(20)
+  duration?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(20)
+  difficulty?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  downloadable?: boolean;
+
+  @IsString()
+  @IsOptional()
+  download_url?: string;
+
+  @IsEnum(GuideStatus)
+  @IsOptional()
+  status?: GuideStatus;
 }

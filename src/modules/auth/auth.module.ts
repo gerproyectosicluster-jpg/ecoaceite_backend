@@ -5,12 +5,14 @@ import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthGuard } from './guard/auth.guard';
+import { RestaurantModule } from '../restaurant/restaurant.module';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService, AuthGuard],
   imports: [
     forwardRef(() => UserModule),
+    forwardRef(() => RestaurantModule),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

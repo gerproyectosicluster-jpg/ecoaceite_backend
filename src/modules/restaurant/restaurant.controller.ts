@@ -18,7 +18,7 @@ import { RolesGuard } from 'src/util/guards/roles.guard';
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
 
-  @UseGuards(AuthGuard, new RolesGuard(['admin']))
+  // @UseGuards(AuthGuard, new RolesGuard(['admin']))
   @Post()
   create(@Body() createRestaurantDto: CreateRestaurantDto) {
     return this.restaurantService.create(createRestaurantDto);

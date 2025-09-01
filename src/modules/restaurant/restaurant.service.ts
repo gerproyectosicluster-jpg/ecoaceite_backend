@@ -13,7 +13,10 @@ export class RestaurantService {
   ) {}
 
   async create(createRestaurantDto: CreateRestaurantDto): Promise<Restaurant> {
-    const restaurant = this.restaurantRepository.create(createRestaurantDto);
+    const restaurant = this.restaurantRepository.create({
+      ...createRestaurantDto,
+      user: { id: createRestaurantDto.user_id } as any,
+    });
     return await this.restaurantRepository.save(restaurant);
   }
 

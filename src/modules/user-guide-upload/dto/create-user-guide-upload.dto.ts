@@ -11,5 +11,5 @@ export class CreateUserGuideUploadDto {
 
   @IsString()
   @IsNotEmpty()
-  upload_url: string;
+  upload_url?: string;
 }

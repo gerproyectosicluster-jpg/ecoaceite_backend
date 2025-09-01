@@ -17,6 +17,9 @@ import { UserAnswerModule } from './modules/user-answer/user-answer.module';
 import { QuizResultModule } from './modules/quiz-result/quiz-result.module';
 import { EducationalGuideModule } from './modules/educational-guide/educational-guide.module';
 import { UserGuideUploadModule } from './modules/user-guide-upload/user-guide-upload.module';
+import { EducationalUnitModule } from './modules/educational-unit/educational-unit.module';
+import { UserEducationalUnitProgressModule } from './modules/user_educational_unit_progress/user_educational_unit_progress.module';
+import { UserGuideProgressModule } from './modules/user_guide_progress/user_guide_progress.module';
 
 @Module({
   imports: [
@@ -45,6 +48,9 @@ import { UserGuideUploadModule } from './modules/user-guide-upload/user-guide-up
     QuizResultModule,
     EducationalGuideModule,
     UserGuideUploadModule,
+    EducationalUnitModule,
+    UserEducationalUnitProgressModule,
+    UserGuideProgressModule,
   ],
   controllers: [],
   providers: [],

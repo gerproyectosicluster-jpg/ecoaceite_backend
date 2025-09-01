@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { EducationalUnit } from '../educational-unit/entities/educational-unit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EducationalGuide } from './entities/educational-guide.entity';
@@ -10,17 +11,30 @@ export class EducationalGuideService {
   constructor(
     @InjectRepository(EducationalGuide)
     private readonly guideRepository: Repository<EducationalGuide>,
+    @InjectRepository(EducationalUnit)
+    private readonly unitRepository: Repository<EducationalUnit>,
   ) {}
 
   async create(
     createEducationalGuideDto: CreateEducationalGuideDto,
   ): Promise<EducationalGuide> {
-    const guide = this.guideRepository.create(createEducationalGuideDto);
+    const unit = await this.unitRepository.findOne({
+      where: { id: createEducationalGuideDto.unit_id },
+    });
+    if (!unit) throw new NotFoundException('EducationalUnit not found');
+    const guide = this.guideRepository.create({
+      ...createEducationalGuideDto,
+      unit,
+    });
     return await this.guideRepository.save(guide);
   }
 
-  async findAll(): Promise<EducationalGuide[]> {
-    return await this.guideRepository.find();
+  async findAll(): Promise<any[]> {
+    const guides = await this.guideRepository.find({ relations: ['unit'] });
+    return guides.map((guide) => ({
+      ...guide,
+      unit_id: guide.unit?.id,
+    }));
   }
 
   async findOne(id: string): Promise<EducationalGuide> {
