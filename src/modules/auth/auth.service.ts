@@ -21,7 +21,10 @@ export class AuthService {
 
     //Return JWT token
     const payload = { sub: user.id, email: user.email };
-    return { access_token: await this.jwtService.signAsync(payload) };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+      user_id: user.id,
+    };
   }
 
   async register(payload: RegisterDto): Promise<any> {

@@ -1,4 +1,11 @@
-import { IsUUID, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsUUID,
+  IsNotEmpty,
+  IsString,
+  IsEnum,
+  IsOptional,
+} from 'class-validator';
+import { GuideStatus } from '../enum/guide_status.enum';
 
 export class CreateUserGuideUploadDto {
   @IsUUID()
@@ -10,6 +17,10 @@ export class CreateUserGuideUploadDto {
   user_id: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   upload_url?: string;
+
+  @IsEnum(GuideStatus)
+  @IsOptional()
+  status?: GuideStatus;
 }

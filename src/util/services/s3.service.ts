@@ -22,10 +22,11 @@ export class S3Service {
 
   async uploadFile(
     file: Express.Multer.File,
-    userId: string,
-    guideId: string,
+    restaurantName: string,
+    guideName: string,
+    unitSlug: string,
   ): Promise<string> {
-    const key = `${userId}/${guideId}/${uuidv4()}_${file.originalname}`;
+    const key = `educational_units/${unitSlug}/responses/${guideName}/${restaurantName}/${file.originalname}`;
     await this.s3.send(
       new PutObjectCommand({
         Bucket: this.bucket,

@@ -40,4 +40,8 @@ export class CreateEducationalUnitDto {
   @IsNotEmpty()
   @MaxLength(20)
   level: string;
+
+  @IsString()
+  @IsOptional()
+  slug?: string;
 }

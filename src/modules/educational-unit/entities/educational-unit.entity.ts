@@ -25,4 +25,7 @@ export class EducationalUnit {
 
   @Column({ type: 'varchar', length: 20 })
   level: string;
+
+  @Column({ type: 'varchar', nullable: true, length: 50 })
+  slug: string;
 }

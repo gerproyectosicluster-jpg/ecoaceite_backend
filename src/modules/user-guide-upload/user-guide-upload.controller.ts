@@ -16,6 +16,7 @@ import { UpdateUserGuideUploadDto } from './dto/update-user-guide-upload.dto';
 import { S3Service } from 'src/util/services/s3.service';
 import { UserService } from '../user/user.service';
 import { EducationalGuideService } from '../educational-guide/educational-guide.service';
+import { GuideStatus } from './enum/guide_status.enum';
 
 @Controller('user-guide-upload')
 export class UserGuideUploadController {
@@ -33,18 +34,25 @@ export class UserGuideUploadController {
     @Body() body: CreateUserGuideUploadDto,
   ) {
     const guide = await this.educationalGuideService.findOne(body.guide_id);
+
+    // Asegúrate de cargar la relación 'unit' al buscar la guía
+    const unit = guide.unit;
+    if (!unit) throw new Error('EducationalUnit not found for this guide');
+
     const user = await this.userService.findOne(body.user_id);
 
     const uploadUrl = await this.s3Service.uploadFile(
       file,
       guide.title,
       user.restaurant_name,
+      unit.slug,
     );
 
     return this.userGuideUploadService.create({
-      guide_id: guide.id,
-      user_id: user.id,
+      guide,
+      user,
       upload_url: uploadUrl,
+      status: GuideStatus.PENDING_APPROVAL,
     });
   }
 
@@ -61,6 +69,11 @@ export class UserGuideUploadController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userGuideUploadService.findOne(id);
+  }
+
+  @Get('user/:userId')
+  findByUserId(@Param('userId') userId: string) {
+    return this.userGuideUploadService.findByUserId(userId);
   }
 
   @Patch(':id')

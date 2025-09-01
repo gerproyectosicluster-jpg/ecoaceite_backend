@@ -38,10 +38,10 @@ export class EducationalGuideService {
   }
 
   async findOne(id: string): Promise<EducationalGuide> {
-    const guide = await this.guideRepository.findOne({ where: { id } });
-    if (!guide)
-      throw new NotFoundException(`EducationalGuide #${id} not found`);
-    return guide;
+    return await this.guideRepository.findOne({
+      where: { id },
+      relations: ['unit'],
+    });
   }
 
   async update(

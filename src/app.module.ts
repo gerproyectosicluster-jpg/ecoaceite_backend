@@ -19,7 +19,6 @@ import { EducationalGuideModule } from './modules/educational-guide/educational-
 import { UserGuideUploadModule } from './modules/user-guide-upload/user-guide-upload.module';
 import { EducationalUnitModule } from './modules/educational-unit/educational-unit.module';
 import { UserEducationalUnitProgressModule } from './modules/user_educational_unit_progress/user_educational_unit_progress.module';
-import { UserGuideProgressModule } from './modules/user_guide_progress/user_guide_progress.module';
 
 @Module({
   imports: [
@@ -50,7 +49,6 @@ import { UserGuideProgressModule } from './modules/user_guide_progress/user_guid
     UserGuideUploadModule,
     EducationalUnitModule,
     UserEducationalUnitProgressModule,
-    UserGuideProgressModule,
   ],
   controllers: [],
   providers: [],

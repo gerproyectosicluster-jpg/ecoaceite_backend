@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserGuideUpload } from './entities/user-guide-upload.entity';
-import { CreateUserGuideUploadDto } from './dto/create-user-guide-upload.dto';
+
 import { UpdateUserGuideUploadDto } from './dto/update-user-guide-upload.dto';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class UserGuideUploadService {
   ) {}
 
   async create(
-    createUserGuideUploadDto: CreateUserGuideUploadDto,
+    createUserGuideUploadDto: Partial<UserGuideUpload>,
   ): Promise<UserGuideUpload> {
     const upload = this.uploadRepository.create(createUserGuideUploadDto);
     return await this.uploadRepository.save(upload);
@@ -28,6 +28,13 @@ export class UserGuideUploadService {
     if (!upload)
       throw new NotFoundException(`UserGuideUpload #${id} not found`);
     return upload;
+  }
+
+  async findByUserId(userId: string): Promise<UserGuideUpload[]> {
+    return await this.uploadRepository.find({
+      where: { user: { id: userId } },
+      relations: ['user', 'guide'],
+    });
   }
 
   async update(
