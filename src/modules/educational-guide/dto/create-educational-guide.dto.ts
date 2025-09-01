@@ -40,6 +40,10 @@ export class CreateEducationalGuideDto {
 
   @IsString()
   @IsOptional()
+  guide_image: string;
+
+  @IsString()
+  @IsOptional()
   download_url?: string;
 
   @IsEnum(GuideStatus)

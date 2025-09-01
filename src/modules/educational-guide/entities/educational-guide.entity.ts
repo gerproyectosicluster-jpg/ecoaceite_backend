@@ -32,6 +32,14 @@ export class EducationalGuide {
   @Column({ type: 'boolean', default: true })
   downloadable: boolean;
 
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    default:
+      'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/65545f71-83d5-43ad-8e13-6a3c70e977ee.png',
+  })
+  guide_image: string;
+
   @Column({ type: 'text', nullable: true })
   download_url?: string;
 
