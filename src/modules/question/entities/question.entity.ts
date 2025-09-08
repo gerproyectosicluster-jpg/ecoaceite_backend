@@ -9,9 +9,15 @@ export class Question {
   @ManyToOne(() => EducationalModule, { onDelete: 'CASCADE' })
   module: EducationalModule;
 
-  @Column({ type: 'text' })
-  text: string; //question itself
+  @Column({ type: 'varchar', length: 100 })
+  section: string;
 
-  @Column({ type: 'jsonb' })
-  options: string[]; //answer options
+  @Column({ type: 'int' })
+  order: number;
+
+  @Column({ type: 'text' })
+  text: string;
+
+  @Column({ type: 'jsonb', default: '[1,2,3,4,5]' })
+  options: number[];
 }

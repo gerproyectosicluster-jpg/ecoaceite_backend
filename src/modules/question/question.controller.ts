@@ -18,7 +18,6 @@ import { RolesGuard } from 'src/util/guards/roles.guard';
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
-  @UseGuards(AuthGuard, new RolesGuard(['admin']))
   @Post()
   create(@Body() createQuestionDto: CreateQuestionDto) {
     return this.questionService.create(createQuestionDto);
@@ -32,6 +31,11 @@ export class QuestionController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.questionService.findOne(id);
+  }
+
+  @Get('by-module-type/:type')
+  findByModuleType(@Param('type') type: string) {
+    return this.questionService.findByModuleType(type);
   }
 
   @UseGuards(AuthGuard, new RolesGuard(['admin']))

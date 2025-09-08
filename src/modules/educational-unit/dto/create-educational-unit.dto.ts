@@ -14,12 +14,10 @@ export class CreateEducationalUnitDto {
   title: string;
 
   @IsString()
-  @IsNotEmpty()
   @MaxLength(150)
   subtitle: string;
 
   @IsString()
-  @IsNotEmpty()
   description: string;
 
   @IsInt()
@@ -32,12 +30,10 @@ export class CreateEducationalUnitDto {
   resources?: number;
 
   @IsString()
-  @IsNotEmpty()
   @MaxLength(20)
   duration: string;
 
   @IsString()
-  @IsNotEmpty()
   @MaxLength(20)
   level: string;
 

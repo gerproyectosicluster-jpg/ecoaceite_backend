@@ -40,6 +40,15 @@ export class QuestionService {
     return question;
   }
 
+  async findByModuleType(type: string): Promise<Question[]> {
+    return await this.questionRepository
+      .createQueryBuilder('question')
+      .leftJoin('question.module', 'module')
+      .where('module.type = :type', { type })
+      .orderBy('question.order', 'ASC')
+      .getMany();
+  }
+
   async update(
     id: string,
     updateQuestionDto: UpdateQuestionDto,

@@ -4,6 +4,9 @@ import {
   IsString,
   IsArray,
   ArrayMinSize,
+  IsInt,
+  Min,
+  Max,
 } from 'class-validator';
 
 export class CreateQuestionDto {
@@ -13,10 +16,20 @@ export class CreateQuestionDto {
 
   @IsString()
   @IsNotEmpty()
+  section: string;
+
+  @IsInt()
+  @Min(1)
+  order: number;
+
+  @IsString()
+  @IsNotEmpty()
   text: string;
 
   @IsArray()
-  @ArrayMinSize(2)
-  @IsString({ each: true })
-  options: string[];
+  @ArrayMinSize(5)
+  @IsInt({ each: true })
+  @Min(1, { each: true })
+  @Max(5, { each: true })
+  options: number[];
 }

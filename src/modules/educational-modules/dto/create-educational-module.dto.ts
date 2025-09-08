@@ -4,11 +4,16 @@ import {
   IsOptional,
   MaxLength,
   IsInt,
-  Min,
-  IsBoolean,
+  IsArray,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateEducationalModuleDto {
+  @IsString()
+  @IsOptional()
+  @MaxLength(50)
+  type?: string;
+
   @IsString()
   @IsNotEmpty()
   @MaxLength(150)
@@ -16,18 +21,37 @@ export class CreateEducationalModuleDto {
 
   @IsString()
   @IsOptional()
-  description?: string;
+  @MaxLength(150)
+  subtitle?: string;
 
   @IsString()
   @IsOptional()
-  content_url?: string;
+  description?: string;
 
   @IsInt()
-  @Min(0)
   @IsOptional()
-  order?: number;
+  number_questions?: number;
 
-  @IsBoolean()
+  @IsString()
   @IsOptional()
-  is_active?: boolean;
+  @MaxLength(20)
+  duration?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(50)
+  difficulty?: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  benefits?: string[];
+
+  @IsDateString()
+  @IsOptional()
+  dueDate?: string;
+
+  @IsString()
+  @IsOptional()
+  requirements?: string;
 }

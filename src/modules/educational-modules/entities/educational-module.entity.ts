@@ -11,20 +11,40 @@ export class EducationalModule {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: string;
 
+  @Column({ name: 'type', type: 'varchar', length: 50, nullable: true })
+  type?: string;
+
   @Column({ name: 'title', type: 'varchar', length: 150 })
   title: string;
+
+  @Column({ name: 'subtitle', type: 'varchar', length: 150, nullable: true })
+  subtitle?: string;
 
   @Column({ name: 'description', type: 'text', nullable: true })
   description?: string;
 
-  @Column({ name: 'content_url', type: 'text', nullable: true })
-  content_url?: string;
+  @Column({
+    name: 'number_questions',
+    type: 'int',
+    nullable: true,
+    default: 25,
+  })
+  number_questions?: number;
 
-  @Column({ name: 'order', type: 'int', default: 0 })
-  order: number;
+  @Column({ name: 'duration', type: 'varchar', length: 20, nullable: true })
+  duration?: string;
 
-  @Column({ name: 'is_active', type: 'boolean', default: true })
-  is_active: boolean;
+  @Column({ name: 'difficulty', type: 'varchar', length: 50, nullable: true })
+  difficulty?: string;
+
+  @Column({ name: 'benefits', type: 'text', array: true, nullable: true })
+  benefits?: string[];
+
+  @Column({ name: 'due_date', type: 'date', nullable: true })
+  dueDate?: string;
+
+  @Column({ name: 'requirements', type: 'text', nullable: true })
+  requirements?: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   created_at: Date;

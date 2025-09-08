@@ -40,6 +40,10 @@ export class CreateEducationalGuideDto {
 
   @IsString()
   @IsOptional()
+  description?: string;
+
+  @IsString()
+  @IsOptional()
   guide_image: string;
 
   @IsString()

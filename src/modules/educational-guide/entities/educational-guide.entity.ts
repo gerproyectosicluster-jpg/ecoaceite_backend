@@ -26,6 +26,9 @@ export class EducationalGuide {
   @Column({ type: 'varchar', length: 20, nullable: true })
   duration?: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  description?: string;
+
   @Column({ type: 'varchar', length: 20, nullable: true })
   difficulty?: string;
 

@@ -22,7 +22,9 @@ export class EducationalModulesService {
   }
 
   async findAll(): Promise<EducationalModule[]> {
-    return await this.educationalModuleRepository.find();
+    return await this.educationalModuleRepository.find({
+      order: { title: 'DESC' },
+    });
   }
 
   async findOne(id: string): Promise<EducationalModule> {
