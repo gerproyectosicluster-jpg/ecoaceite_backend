@@ -21,7 +21,7 @@ export class QuizResult {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'decimal' })
   score: number;
 
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })

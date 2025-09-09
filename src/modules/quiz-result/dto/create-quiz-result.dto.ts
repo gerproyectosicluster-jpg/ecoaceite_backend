@@ -1,4 +1,4 @@
-import { IsUUID, IsNotEmpty, IsInt, Min } from 'class-validator';
+import { IsUUID, IsNotEmpty, Min, IsDecimal } from 'class-validator';
 
 export class CreateQuizResultDto {
   @IsUUID()
@@ -9,7 +9,7 @@ export class CreateQuizResultDto {
   @IsNotEmpty()
   user_id: string;
 
-  @IsInt()
+  @IsDecimal()
   @Min(0)
   score: number;
 }

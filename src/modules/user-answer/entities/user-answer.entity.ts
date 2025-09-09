@@ -22,7 +22,7 @@ export class UserAnswer {
   user: User;
 
   @Column({ type: 'int' })
-  selected_option: number; // index of the selected option
+  selected_option: number;
 
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   answered_at: Date;

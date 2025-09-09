@@ -10,6 +10,7 @@ import {
 import { UserAnswerService } from './user-answer.service';
 import { CreateUserAnswerDto } from './dto/create-user-answer.dto';
 import { UpdateUserAnswerDto } from './dto/update-user-answer.dto';
+import { SubmitUserAnswersDto } from './dto/submit-user-answers.dto';
 
 @Controller('user-answer')
 export class UserAnswerController {
@@ -18,6 +19,11 @@ export class UserAnswerController {
   @Post()
   create(@Body() createUserAnswerDto: CreateUserAnswerDto) {
     return this.userAnswerService.create(createUserAnswerDto);
+  }
+
+  @Post('submit')
+  async submitAnswers(@Body() submitUserAnswersDto: SubmitUserAnswersDto) {
+    return this.userAnswerService.submitAnswers(submitUserAnswersDto);
   }
 
   @Get()

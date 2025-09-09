@@ -30,6 +30,7 @@ export class QuizResultService {
   async findByUser(userId: string): Promise<QuizResult[]> {
     return await this.quizResultRepository.find({
       where: { user: { id: userId } },
+      relations: ['module'],
     });
   }
 
