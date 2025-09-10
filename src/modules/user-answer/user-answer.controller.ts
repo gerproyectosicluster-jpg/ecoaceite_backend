@@ -26,6 +26,22 @@ export class UserAnswerController {
     return this.userAnswerService.submitAnswers(submitUserAnswersDto);
   }
 
+  @Get('section-averages/:userId/:moduleType')
+  getSectionAveragesByUserAndModuleType(
+    @Param('userId') userId: string,
+    @Param('moduleType') moduleType: string,
+  ) {
+    return this.userAnswerService.getSectionAveragesByUserAndModuleType(
+      userId,
+      moduleType,
+    );
+  }
+
+  @Get('all-section-averages/:userId')
+  getAllSectionAveragesByUser(@Param('userId') userId: string) {
+    return this.userAnswerService.getAllSectionAveragesByUser(userId);
+  }
+
   @Get()
   findAll() {
     return this.userAnswerService.findAll();

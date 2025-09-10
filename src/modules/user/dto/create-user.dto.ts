@@ -5,6 +5,7 @@ import {
   IsString,
   IsIn,
   IsBoolean,
+  IsDecimal,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -39,6 +40,14 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   address?: string;
+
+  @IsDecimal()
+  @IsOptional()
+  latitude?: number;
+
+  @IsDecimal()
+  @IsOptional()
+  longitude?: number;
 
   @IsString()
   @IsOptional()

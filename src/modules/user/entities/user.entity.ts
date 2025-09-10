@@ -50,6 +50,12 @@ export class User {
   @Column({ name: 'address', type: 'text', nullable: true })
   address?: string;
 
+  @Column({ name: 'latitude', type: 'decimal', nullable: true })
+  latitude?: number;
+
+  @Column({ name: 'longitude', type: 'decimal', nullable: true })
+  longitude?: number;
+
   @Column({ name: 'city', type: 'varchar', length: 50, nullable: true })
   city?: string;
 

@@ -31,8 +31,11 @@ export class UserAnswerService {
     );
 
     await this.userAnswerRepository.save(answers);
-    const total = answers.reduce((sum, ans) => sum + ans.selected_option, 0);
-    const score = answers.length > 0 ? total / answers.length : 0;
+
+    // Solo considerar los primeros 20 elementos para el score
+    const first20 = answers.slice(0, 20);
+    const total = first20.reduce((sum, ans) => sum + ans.selected_option, 0);
+    const score = first20.length > 0 ? total / first20.length : 0;
 
     // Guardar resultado en quiz result
     const quizResult = this.quizResultRepository.create({
@@ -43,6 +46,82 @@ export class UserAnswerService {
     await this.quizResultRepository.save(quizResult);
 
     return { success: true, count: answers.length, score: quizResult.score };
+  }
+
+  async getSectionAveragesByUserAndModuleType(
+    userId: string,
+    moduleType: string,
+  ): Promise<Record<string, number>> {
+    const answers = await this.userAnswerRepository.find({
+      where: { user: { id: userId } },
+      relations: ['question', 'question.module'],
+    });
+
+    // Filtrar solo respuestas de preguntas cuyo módulo sea del tipo solicitado
+    const filteredAnswers = answers.filter(
+      (answer) => answer.question.module?.type === moduleType,
+    );
+
+    const sectionMap: Record<string, { total: number; count: number }> = {};
+
+    for (const answer of filteredAnswers) {
+      const section = answer.question.section;
+      if (!sectionMap[section]) {
+        sectionMap[section] = { total: 0, count: 0 };
+      }
+      sectionMap[section].total += answer.selected_option;
+      sectionMap[section].count += 1;
+    }
+
+    const result: Record<string, number> = {};
+    for (const section in sectionMap) {
+      result[section] = Number(
+        (sectionMap[section].total / sectionMap[section].count).toFixed(2),
+      );
+    }
+
+    return result;
+  }
+
+  async getAllSectionAveragesByUser(
+    userId: string,
+  ): Promise<Record<string, Record<string, number>>> {
+    const answers = await this.userAnswerRepository.find({
+      where: { user: { id: userId } },
+      relations: ['question', 'question.module'],
+    });
+
+    // Agrupar por tipo de módulo y sección
+    const typeSectionMap: Record<
+      string,
+      Record<string, { total: number; count: number }>
+    > = {};
+
+    for (const answer of answers) {
+      const moduleType = answer.question.module?.type;
+      const section = answer.question.section;
+      if (!moduleType) continue;
+      if (!typeSectionMap[moduleType]) {
+        typeSectionMap[moduleType] = {};
+      }
+      if (!typeSectionMap[moduleType][section]) {
+        typeSectionMap[moduleType][section] = { total: 0, count: 0 };
+      }
+      typeSectionMap[moduleType][section].total += answer.selected_option;
+      typeSectionMap[moduleType][section].count += 1;
+    }
+
+    // Calcular promedios
+    const result: Record<string, Record<string, number>> = {};
+    for (const moduleType in typeSectionMap) {
+      result[moduleType] = {};
+      for (const section in typeSectionMap[moduleType]) {
+        const { total, count } = typeSectionMap[moduleType][section];
+        result[moduleType][section] = Number((total / count).toFixed(2));
+      }
+    }
+
+    return result;
   }
 
   async findAll(): Promise<UserAnswer[]> {

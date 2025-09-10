@@ -34,6 +34,17 @@ export class QuizResultService {
     });
   }
 
+  async hasCompletedInitialQuiz(userId: string): Promise<boolean> {
+    const result = await this.quizResultRepository.findOne({
+      where: {
+        user: { id: userId },
+        module: { type: 'inicial' },
+      },
+      relations: ['module'],
+    });
+    return !!result;
+  }
+
   async update(
     id: string,
     updateQuizResultDto: UpdateQuizResultDto,

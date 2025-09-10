@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   controllers: [UserEducationalUnitProgressController],
   providers: [UserEducationalUnitProgressService],
   imports: [TypeOrmModule.forFeature([UserEducationalUnitProgress])],
+  exports: [TypeOrmModule],
 })
 export class UserEducationalUnitProgressModule {}

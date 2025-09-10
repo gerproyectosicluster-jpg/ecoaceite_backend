@@ -32,6 +32,9 @@ export class EducationalGuide {
   @Column({ type: 'varchar', length: 20, nullable: true })
   difficulty?: string;
 
+  @Column({ type: 'int', nullable: true })
+  guide_score?: number;
+
   @Column({ type: 'boolean', default: true })
   downloadable: boolean;
 

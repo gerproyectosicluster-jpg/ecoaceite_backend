@@ -28,6 +28,14 @@ export class Restaurant {
   @Column({ name: 'capacity', type: 'int' })
   capacity: number;
 
+  @Column({
+    name: 'classification',
+    nullable: true,
+    type: 'varchar',
+    length: 50,
+  })
+  classification?: string;
+
   @Column({ name: 'founding_year', type: 'int' })
   founding_year: number;
 

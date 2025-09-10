@@ -12,6 +12,11 @@ export class CreateUserEducationalUnitProgressDto {
   @IsOptional()
   progress?: number;
 
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  total_score?: number;
+
   @IsBoolean()
   @IsOptional()
   completed?: boolean;

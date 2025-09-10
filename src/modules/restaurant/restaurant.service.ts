@@ -13,9 +13,19 @@ export class RestaurantService {
   ) {}
 
   async create(createRestaurantDto: CreateRestaurantDto): Promise<Restaurant> {
+    let classification = '';
+    if (createRestaurantDto.capacity <= 50) {
+      classification = 'Cuchara al fuego';
+    } else if (createRestaurantDto.capacity <= 150) {
+      classification = 'Sartén en marcha';
+    } else {
+      classification = 'Ollas en acción';
+    }
+
     const restaurant = this.restaurantRepository.create({
       ...createRestaurantDto,
       user: { id: createRestaurantDto.user_id } as any,
+      classification,
     });
     return await this.restaurantRepository.save(restaurant);
   }

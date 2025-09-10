@@ -30,6 +30,13 @@ export class QuizResultController {
     return this.quizResultService.findOne(id);
   }
 
+  @Get('completed-initial/:userId')
+  async hasCompletedInitialQuiz(@Param('userId') userId: string) {
+    return {
+      completed: await this.quizResultService.hasCompletedInitialQuiz(userId),
+    };
+  }
+
   @Get('user/:userId')
   findByUser(@Param('userId') userId: string) {
     return this.quizResultService.findByUser(userId);

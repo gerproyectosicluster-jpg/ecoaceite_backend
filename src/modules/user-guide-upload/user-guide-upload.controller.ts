@@ -61,6 +61,11 @@ export class UserGuideUploadController {
     return this.userGuideUploadService.create(createUserGuideUploadDto);
   }
 
+  @Patch('approve/:id')
+  async approveUpload(@Param('id') id: string) {
+    return this.userGuideUploadService.approveUploadAndUpdateProgress(id);
+  }
+
   @Get()
   findAll() {
     return this.userGuideUploadService.findAll();

@@ -26,6 +26,9 @@ export class UserEducationalUnitProgress {
   @Column({ type: 'int', default: 0 })
   progress: number;
 
+  @Column({ type: 'int', default: 0 })
+  total_score: number;
+
   @Column({ type: 'boolean', default: false })
   completed: boolean;
 }

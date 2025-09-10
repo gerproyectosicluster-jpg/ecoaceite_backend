@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsObject,
   IsUUID,
+  IsString,
 } from 'class-validator';
 import { CertificationStatus } from '../enums/certification_status.enum';
 import { RestaurantCategory } from '../enums/restaurant_category.enum';
@@ -18,6 +19,10 @@ export class CreateRestaurantDto {
   @IsNumber()
   @IsPositive()
   capacity: number;
+
+  @IsString()
+  @IsOptional()
+  classification?: string;
 
   @IsNumber()
   @IsPositive()
