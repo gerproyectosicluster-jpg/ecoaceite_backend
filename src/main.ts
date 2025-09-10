@@ -9,7 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   app.enableCors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5173', 'https://cocinaheroica.pro'],
     credentials: true,
   });
 
