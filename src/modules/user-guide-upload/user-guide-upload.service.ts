@@ -29,8 +29,28 @@ export class UserGuideUploadService {
     return await this.uploadRepository.save(upload);
   }
 
-  async findAll(): Promise<UserGuideUpload[]> {
-    return await this.uploadRepository.find();
+  async findAll(
+    page = 1,
+    limit = 10,
+  ): Promise<{
+    data: UserGuideUpload[];
+    total: number;
+    page: number;
+    lastPage: number;
+  }> {
+    const [data, total] = await this.uploadRepository.findAndCount({
+      relations: ['user', 'guide', 'guide.unit'],
+      order: { user: { name: 'ASC' } },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return {
+      data,
+      total,
+      page,
+      lastPage: Math.ceil(total / limit),
+    };
   }
 
   async findOne(id: string): Promise<UserGuideUpload> {
@@ -101,5 +121,14 @@ export class UserGuideUploadService {
     await this.progressRepository.save(progress);
 
     return { success: true };
+  }
+
+  async rejectUpload(uploadId: string): Promise<UserGuideUpload> {
+    const upload = await this.uploadRepository.findOne({
+      where: { id: uploadId },
+    });
+    if (!upload) throw new NotFoundException('UserGuideUpload not found');
+    upload.status = GuideStatus.REJECTED;
+    return await this.uploadRepository.save(upload);
   }
 }

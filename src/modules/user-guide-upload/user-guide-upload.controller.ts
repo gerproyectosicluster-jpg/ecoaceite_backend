@@ -8,6 +8,7 @@ import {
   Delete,
   UploadedFile,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserGuideUploadService } from './user-guide-upload.service';
@@ -66,9 +67,14 @@ export class UserGuideUploadController {
     return this.userGuideUploadService.approveUploadAndUpdateProgress(id);
   }
 
+  @Patch('reject/:id')
+  async rejectUpload(@Param('id') id: string) {
+    return this.userGuideUploadService.rejectUpload(id);
+  }
+
   @Get()
-  findAll() {
-    return this.userGuideUploadService.findAll();
+  findAll(@Query('page') page = 1, @Query('limit') limit = 10) {
+    return this.userGuideUploadService.findAll(Number(page), Number(limit));
   }
 
   @Get(':id')
