@@ -51,17 +51,21 @@ export class UserEducationalUnitProgressService {
   ): Promise<{ role: string; classification: string | null }> {
     const user = await this.progressRepository.manager
       .createQueryBuilder(User, 'user')
-      .leftJoinAndSelect(
-        Restaurant,
-        'restaurant',
-        'restaurant.user_id = user.id',
-      )
+      .leftJoin(Restaurant, 'restaurant', 'restaurant.user_id = user.id')
       .where('user.id = :userId', { userId })
-      .select(['user.role', 'restaurant.classification'])
+      .select([
+        'user.role AS role',
+        'restaurant.classification AS classification',
+      ])
       .getRawOne();
+
+    if (!user) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+
     return {
-      role: user.user_role,
-      classification: user.restaurant_classification || null,
+      role: user.role,
+      classification: user.classification || null,
     };
   }
 

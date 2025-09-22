@@ -24,7 +24,6 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.userService.findAll();

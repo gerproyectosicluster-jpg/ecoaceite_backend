@@ -24,6 +24,7 @@ export class AuthService {
     return {
       access_token: await this.jwtService.signAsync(payload),
       user_id: user.id,
+      role: user.role,
     };
   }
 
@@ -46,6 +47,6 @@ export class AuthService {
     });
 
     // 4. Retornar usuario, restaurante (si aplica) y token
-    return { user, restaurant, access_token: token };
+    return { user, restaurant, access_token: token, role: user.role };
   }
 }
