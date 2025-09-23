@@ -2,7 +2,6 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class S3Service {
@@ -26,15 +25,43 @@ export class S3Service {
     guideName: string,
     unitSlug: string,
   ): Promise<string> {
-    const key = `educational_units/${unitSlug}/responses/${guideName}/${restaurantName}/${file.originalname}`;
+    // Sanitizar partes de la ruta
+    const safeUnit = this.slugify(unitSlug);
+    const safeGuide = this.slugify(guideName);
+    const safeRestaurant = this.slugify(restaurantName);
+
+    const safeFileName = this.fixFileName(file.originalname);
+
+    const rawKey = `educational_units/${safeUnit}/responses/${safeGuide}/${safeRestaurant}/${safeFileName}`;
+
+    // Subir el archivo con el nombre tal cual
     await this.s3.send(
       new PutObjectCommand({
         Bucket: this.bucket,
-        Key: key,
+        Key: rawKey,
         Body: file.buffer,
         ContentType: file.mimetype,
       }),
     );
-    return `https://${this.bucket}.s3.amazonaws.com/${key}`;
+
+    // Construir URL pública URL-safe
+    const encodedKey = rawKey
+      .split('/')
+      .map((segment) => encodeURIComponent(segment))
+      .join('/');
+
+    return `https://${this.bucket}.s3.amazonaws.com/${encodedKey}`;
+  }
+
+  slugify(str: string) {
+    return str
+      .normalize('NFD') // elimina acentos
+      .replace(/[\u0300-\u036f]/g, '') // elimina diacríticos
+      .replace(/[^a-zA-Z0-9._-]/g, '_') // deja solo caracteres seguros
+      .toLowerCase();
+  }
+
+  fixFileName(name: string): string {
+    return Buffer.from(name, 'latin1').toString('utf8');
   }
 }
