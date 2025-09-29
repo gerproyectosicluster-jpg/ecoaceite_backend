@@ -1,11 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { UserAnswer } from './entities/user-answer.entity';
 import { CreateUserAnswerDto } from './dto/create-user-answer.dto';
 import { UpdateUserAnswerDto } from './dto/update-user-answer.dto';
 import { SubmitUserAnswersDto } from './dto/submit-user-answers.dto';
 import { QuizResult } from '../quiz-result/entities/quiz-result.entity';
+import * as ExcelJS from 'exceljs';
+import { Response } from 'express';
+import { Question } from '../question/entities/question.entity';
 
 @Injectable()
 export class UserAnswerService {
@@ -146,5 +149,70 @@ export class UserAnswerService {
   async remove(id: string): Promise<void> {
     const answer = await this.findOne(id);
     await this.userAnswerRepository.remove(answer);
+  }
+
+  async exportAnswersToExcel(moduleId: string, res: Response): Promise<void> {
+    // 1. Obtener todas las preguntas del módulo ordenadas
+    const questions = await this.userAnswerRepository.manager
+      .getRepository(Question)
+      .createQueryBuilder('question')
+      .where('question.moduleId = :moduleId', { moduleId })
+      .orderBy('question.order', 'ASC')
+      .getMany();
+
+    // 2. Obtener todas las respuestas de esas preguntas con usuario y pregunta
+    const questionIds = questions.map((q) => q.id);
+    const answers = await this.userAnswerRepository.find({
+      where: { question: In(questionIds) },
+      relations: ['user', 'question'],
+    });
+
+    // 3. Agrupar respuestas por usuario
+    const userMap: Record<
+      string,
+      { name: string; answers: Record<string, number> }
+    > = {};
+    for (const ans of answers) {
+      if (!userMap[ans.user.id]) {
+        userMap[ans.user.id] = { name: ans.user.name, answers: {} };
+      }
+      userMap[ans.user.id].answers[ans.question.id] = ans.selected_option;
+    }
+
+    // 4. Crear el workbook y worksheet
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('User Answers');
+
+    // 5. Crear encabezados
+    const headers = [
+      { header: 'user_id', key: 'user_id' },
+      { header: 'user_name', key: 'user_name' },
+      ...questions.map((q) => ({ header: q.text, key: q.id })),
+    ];
+    worksheet.columns = headers;
+
+    // 6. Agregar filas
+    for (const [userId, { name, answers }] of Object.entries(userMap)) {
+      const row: Record<string, any> = {
+        user_id: userId,
+        user_name: name,
+      };
+      for (const q of questions) {
+        row[q.id] = answers[q.id] ?? '';
+      }
+      worksheet.addRow(row);
+    }
+
+    // 7. Enviar el archivo como respuesta
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="user_answers.xlsx"',
+    );
+    await workbook.xlsx.write(res);
+    res.end();
   }
 }

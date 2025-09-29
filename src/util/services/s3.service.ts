@@ -1,5 +1,9 @@
 // filepath: src/common/s3.service.ts
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -34,7 +38,7 @@ export class S3Service {
 
     const rawKey = `educational_units/${safeUnit}/responses/${safeGuide}/${safeRestaurant}/${safeFileName}`;
 
-    // Subir el archivo con el nombre tal cual
+    // Subir el archivo
     await this.s3.send(
       new PutObjectCommand({
         Bucket: this.bucket,
@@ -51,6 +55,18 @@ export class S3Service {
       .join('/');
 
     return `https://${this.bucket}.s3.amazonaws.com/${encodedKey}`;
+  }
+
+  async deleteFile(fileUrl: string): Promise<void> {
+    // Extraer el key del fileUrl
+    const url = new URL(fileUrl);
+    const key = decodeURIComponent(url.pathname.substring(1));
+    await this.s3.send(
+      new DeleteObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+      }),
+    );
   }
 
   slugify(str: string) {

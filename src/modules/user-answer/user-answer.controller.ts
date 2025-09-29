@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Res,
 } from '@nestjs/common';
 import { UserAnswerService } from './user-answer.service';
 import { CreateUserAnswerDto } from './dto/create-user-answer.dto';
 import { UpdateUserAnswerDto } from './dto/update-user-answer.dto';
 import { SubmitUserAnswersDto } from './dto/submit-user-answers.dto';
+import { Response } from 'express';
 
 @Controller('user-answer')
 export class UserAnswerController {
@@ -40,6 +42,14 @@ export class UserAnswerController {
   @Get('all-section-averages/:userId')
   getAllSectionAveragesByUser(@Param('userId') userId: string) {
     return this.userAnswerService.getAllSectionAveragesByUser(userId);
+  }
+
+  @Get('export/excel/:moduleId')
+  async exportAnswersToExcel(
+    @Param('moduleId') moduleId: string,
+    @Res() res: Response,
+  ) {
+    return this.userAnswerService.exportAnswersToExcel(moduleId, res);
   }
 
   @Get()

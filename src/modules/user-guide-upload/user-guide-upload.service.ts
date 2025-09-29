@@ -67,6 +67,15 @@ export class UserGuideUploadService {
     });
   }
 
+  async findByUserAndGuide(
+    userId: string,
+    guideId: string,
+  ): Promise<UserGuideUpload | undefined> {
+    return await this.uploadRepository.findOne({
+      where: { user: { id: userId }, guide: { id: guideId } },
+    });
+  }
+
   async update(
     id: string,
     updateUserGuideUploadDto: UpdateUserGuideUploadDto,

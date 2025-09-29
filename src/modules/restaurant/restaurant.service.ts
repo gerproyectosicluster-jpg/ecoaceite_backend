@@ -42,6 +42,12 @@ export class RestaurantService {
     return restaurant;
   }
 
+  async findByUserId(userId: string): Promise<Restaurant | null> {
+    return await this.restaurantRepository.findOne({
+      where: { user: { id: userId } },
+    });
+  }
+
   async update(
     id: string,
     updateRestaurantDto: UpdateRestaurantDto,

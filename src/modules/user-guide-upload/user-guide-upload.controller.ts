@@ -35,13 +35,22 @@ export class UserGuideUploadController {
     @Body() body: CreateUserGuideUploadDto,
   ) {
     const guide = await this.educationalGuideService.findOne(body.guide_id);
-
-    // Asegúrate de cargar la relación 'unit' al buscar la guía
     const unit = guide.unit;
     if (!unit) throw new Error('EducationalUnit not found for this guide');
-
     const user = await this.userService.findOne(body.user_id);
 
+    // Buscar si ya existe un upload para este user y guide
+    const existingUpload = await this.userGuideUploadService.findByUserAndGuide(
+      body.user_id,
+      body.guide_id,
+    );
+
+    // Si existe, eliminar el archivo anterior de S3
+    if (existingUpload && existingUpload.upload_url) {
+      await this.s3Service.deleteFile(existingUpload.upload_url);
+    }
+
+    // Subir el nuevo archivo
     const uploadUrl = await this.s3Service.uploadFile(
       file,
       guide.title,
@@ -49,12 +58,23 @@ export class UserGuideUploadController {
       unit.slug,
     );
 
-    return this.userGuideUploadService.create({
-      guide,
-      user,
-      upload_url: uploadUrl,
-      status: GuideStatus.PENDING_APPROVAL,
-    });
+    if (existingUpload) {
+      // Actualizar el registro existente
+      existingUpload.upload_url = uploadUrl;
+      existingUpload.status = GuideStatus.PENDING_APPROVAL;
+      return this.userGuideUploadService.update(
+        existingUpload.id,
+        existingUpload,
+      );
+    } else {
+      // Crear nuevo registro
+      return this.userGuideUploadService.create({
+        guide,
+        user,
+        upload_url: uploadUrl,
+        status: GuideStatus.PENDING_APPROVAL,
+      });
+    }
   }
 
   @Post()
