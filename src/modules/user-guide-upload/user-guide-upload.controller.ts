@@ -9,6 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserGuideUploadService } from './user-guide-upload.service';
@@ -18,7 +19,9 @@ import { S3Service } from 'src/util/services/s3.service';
 import { UserService } from '../user/user.service';
 import { EducationalGuideService } from '../educational-guide/educational-guide.service';
 import { GuideStatus } from './enum/guide_status.enum';
+import { MulterExceptionFilter } from './multer-exception-filter';
 
+@UseFilters(MulterExceptionFilter)
 @Controller('user-guide-upload')
 export class UserGuideUploadController {
   constructor(
@@ -29,7 +32,11 @@ export class UserGuideUploadController {
   ) {}
 
   @Post('file')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB en bytes
+    }),
+  )
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: CreateUserGuideUploadDto,
